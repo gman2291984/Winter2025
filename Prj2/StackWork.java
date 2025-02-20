@@ -16,7 +16,7 @@ public class StackWork {
     private int S2length;
     
     //to disable the debugger comments then set false...true to see them in the console...
-  	private static final boolean DebuggerMODE = true;
+  	private static final boolean DebuggerMODE = false;
    
     // Precondition: S0size, S1size, and S2size are greater than 0.
     // Postcondition: The stacks S0, S1, and S2, are created, and their respective lengths are initialized.
@@ -42,25 +42,22 @@ public class StackWork {
     public void Push(int StackSelector, int x) {
     	
     	//A stack always follows the LIFO (Last-In-First-Out) principle.
-    	
+    	//if you want to reverse taht then we will make it in reverse order then store poped elements in a temparray -- then push them...
         if (StackSelector == 0) {
             if (S0top < S0length - 1) {
-                S0[++S0top] = x;
-                if (DebuggerMODE) {System.out.println("DEBUG: Current S0 Top: " + x);}
+                S0[++S0top] = x;   
             } else {
                 System.out.println("Stack S0 is full!");
             }
         } else if (StackSelector == 1) {
             if (S1top < S1length - 1) {
-                S1[++S1top] = x;
-                if (DebuggerMODE) {System.out.println("DEBUG: Current S1 Top: " + x);}
+                S1[++S1top] = x; 
             } else {
                 System.out.println("Stack S1 is full!");
             }
         } else if (StackSelector == 2) {
             if (S2top < S2length - 1) {
                 S2[++S2top] = x;
-                if (DebuggerMODE) {System.out.println("DEBUG: Current S2 Top: " + x);}
             } else {
                 System.out.println("Stack S2 is full!");
             }
@@ -78,14 +75,54 @@ public class StackWork {
     public int Pop(int StackSelector) {
         if (StackSelector == 0) {
             if (S0top >= 0) {
+                if (DebuggerMODE) {
+                    System.out.print("DEBUG: S0 Top before Pop: " + S0top + " \nDEBUG: Packets before Pop in S0: ");
+                    for (int i = 0; i <= S0top; i++) {
+                        System.out.print(S0[i] + " ");
+                    }
+                    System.out.println();
+                    
+                    // Optionally, if you want to show the state after pop, you can compute what it will be:
+                    System.out.print("DEBUG: S0 Top after Pop: " + (S0top - 1) + " \nDEBUG: Packets after Pop in S0: ");
+                    for (int i = 0; i <= S0top - 1; i++) {
+                        System.out.print(S0[i] + " ");
+                    }
+                    System.out.println();
+                }
                 return S0[S0top--];
             }
         } else if (StackSelector == 1) {
             if (S1top >= 0) {
+                if (DebuggerMODE) {System.out.print("DEBUG: S1 Top before Pop: " + S1top + " \nDEBUG: Packets before Pop in S1: ");
+                    for (int i = 0; i <= S1top; i++) {
+                        System.out.print(S1[i] + " ");
+                    }
+                    System.out.println();
+                    
+                    // Optionally, if you want to show the state after pop, you can compute what it will be:
+                    System.out.print("DEBUG: S1 Top after Pop: " + (S1top - 1) + " \nDEBUG: Packets after Pop in S1: ");
+                    for (int i = 0; i <= S1top - 1; i++) {
+                        System.out.print(S1[i] + " ");
+                    }
+                    System.out.println();
+                }
                 return S1[S1top--];
             }
         } else if (StackSelector == 2) {
             if (S2top >= 0) {
+                if (DebuggerMODE) {System.out.print("DEBUG: S1 Top before Pop: " + S2top + " \nDEBUG: Packets before Pop in S2: ");
+                    for (int i = 0; i <= S2top; i++) {
+                        System.out.print(S2[i] + " ");
+                    }
+                    System.out.println();
+                    
+                    // Optionally, if you want to show the state after pop, you can compute what it will be:
+                    System.out.print("DEBUG: S2 Top after Pop: " + (S2top - 1) + " \nDEBUG: Packets after Pop in S2: ");
+                    for (int i = 0; i <= S2top - 1; i++) {
+                        System.out.print(S2[i] + " ");
+                    }
+                    System.out.println();
+                }
                 return S2[S2top--];
             }
         }
@@ -98,6 +135,8 @@ public class StackWork {
     // the elements of the Stack S2.
     // Display method prints all stacks
     public void displayStackData() {
+    	
+    	
     	   // Print S0 from bottom to top (correct order)
         System.out.print("Data in S0: ");
         for (int i = 0; i <= S0top; i++) { // 🔹 FIX: Print in push order
@@ -127,4 +166,15 @@ public class StackWork {
     public int getS0top() {   
         return S0top;
     }
+    
+    
+    
+    
+    
+    
 }
+
+
+
+
+

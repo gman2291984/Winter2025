@@ -1,3 +1,4 @@
+// Stacks are LIFO, Quesues are FIFO....
 
 package packetSelector;
 
@@ -5,7 +6,10 @@ import textbook.StackWork;
 
 public class runnablepacketSelector {
     
-	private static final boolean DebuggerMODE = true;
+	private static final boolean DebuggerMODE = false;
+	//private static final boolean S1Only = true;
+	//private static final boolean S2Only = true;
+	
 	
     static StackWork packets;
 
@@ -19,8 +23,8 @@ public class runnablepacketSelector {
         
         if (DebuggerMODE) {System.out.println("DEBUG: Starting Push... \n");}
         
-        // Push timestamps (network packets)
-        packets.Push(0, 95);
+        // Push time stamps (network packets)
+        packets.Push(0, 95); 
         packets.Push(0, 103);
         packets.Push(0, 81);
         packets.Push(0, 120);
@@ -29,14 +33,18 @@ public class runnablepacketSelector {
         packets.Push(0, 62);
         packets.Push(0, 101);
         packets.Push(0, 59);
-        packets.Push(0, 148);
+        packets.Push(0, 148); //Last In -- First Out
 
+        if (DebuggerMODE) {System.out.println("\nDEBUG: All packets have been pushed... \n");}
+        
+        if (DebuggerMODE) {System.out.println("DEBUG: Prior to reorganizingNetworkTraffic called -- so S1 and S2 will be left empty... \n");}
         // Display before reorganization
         packets.displayStackData();
 
         // Call method to reorganize network traffic
         reorganizeNetworkTraffic(1);
 
+        //if (DebuggerMODE) {System.out.println("DEBUG: Post reorganizingNetworkTraffic being called -- so S1 and S2 will be populated... \n");}
         // Display after reorganization
         packets.displayStackData();
     }
@@ -51,40 +59,94 @@ public class runnablepacketSelector {
         int[] S1Temp = new int[tempStackSize]; // Temporary storage for S1
         int[] S2Temp = new int[tempStackSize]; // Temporary storage for S2
 
-        int S1Index = 0, S2Index = 0;
+        int S1Index = 0;
+        int S2Index = 0;
 
-        if (DebuggerMODE) {System.out.println("DEBUG: Starting Pop... \n");}
+        if (DebuggerMODE) {System.out.println("\nDEBUG: Starting Pop... \n");}
         
-        // Pop all elements from S0 and distribute into temporary arrays
+        //2 part process to get reverse order!!!...
+        
+        
+        
+        // [1] Pop all elements from S0 and distribute into temporary arrays
         for (int i = 0; i < tempStackSize; i++) {
             int packet = packets.Pop(0);
             
             if (packet <= 100) {
-                S1Temp[S1Index++] = packet; // Store in S1Temp
-                if (DebuggerMODE) {System.out.println("DEBUG: Storing : " + packet + " into S1Temp" + "\n");}
+                S1Temp[S1Index++] = packet; // Store in S1Temp           
+                if (DebuggerMODE) {
+                    System.out.println("\nDEBUG: Storing " + packet + " into S1Temp");
+                    System.out.println("DEBUG: Current S1Temp values: ");
+                    for (int j = 0; j < S1Index; j++) { // ✅ Correct way to print S1Temp
+                        System.out.print(S1Temp[j] + " ");
+                    }
+                    //System.out.println("\n");
+                }
+                
             } else {
                 S2Temp[S2Index++] = packet; // Store in S2Temp
-                if (DebuggerMODE) {System.out.println("DEBUG: Storing : " + packet + " into S2Temp" + "\n");}
+                if (DebuggerMODE) {
+                    System.out.println("\nDEBUG: Storing " + packet + " into S2Temp");
+                    System.out.println("DEBUG: Current S2Temp values: ");
+                    for (int j = 0; j < S2Index; j++) { // ✅ Correct way to print S1Temp
+                        System.out.print(S2Temp[j] + " ");
+                    }
+                    //System.out.println("\n");
+                }
             }
         }
+        
+        
+        if (DebuggerMODE) {System.out.println("\nDEBUG: End of Pop... \n");}
+        
 
-        // Push back into S1 in REVERSE order to ensure correct display
+        if (DebuggerMODE) {System.out.println("\nDEBUG: Starting Push... \n");}
+        
+        
+        
+        // [2] Push back into S1/s2 in REVERSE order to ensure correct display
         for (int i = S1Index - 1; i >= 0; i--) {
             packets.Push(1, S1Temp[i]);
-            if (DebuggerMODE) {System.out.println("DEBUG: Pushing : " + S1Temp[i] + " back into S1" + "\n");}
+            if (DebuggerMODE) {System.out.println("\nDEBUG: Pushing S1Temp[" + i + "]: " + S1Temp[i] + " back into S1" + "\n");packets.displayStackData();}
+            
         }
 
         // Push back into S2 in REVERSE order to ensure correct display
         for (int i = S2Index - 1; i >= 0; i--) {
             packets.Push(2, S2Temp[i]);
-            if (DebuggerMODE) {System.out.println("DEBUG: Pushing : " + S2Temp[i] + " back into S2" + "\n");}
+            if (DebuggerMODE) {System.out.println("\nDEBUG: Pushing S2Temp[" + i + "]: " + S2Temp[i] + " back into S2" + "\n");packets.displayStackData();}       
         }
-
-        // Flip the flag (simple if-else instead of ternary)
-        if (flg == 1) {
-            flg = 0;
-        } else {
-            flg = 1;
-        }
-    }
+		
+		        // Flip the flag (simple if-else instead of ternary)
+		        if (flg == 1) {
+		            flg = 0;
+		        } else {
+		            flg = 1;
+		        }
+        	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
