@@ -36,23 +36,34 @@ public class findMax {
      * @param end The ending index of the range to search.
      * @return The largest temperature reading in the specified range.
      */
-    public int findLargest(int beginning, int end) {
+    public int findLargest(int beginning, int end, String prefix) {
+        // Debug: Show current range being processed with tree structure
+        System.out.println(prefix + "findLargest(" + beginning + "," + end + ")");
+
         // Base case: if the range contains only one element
         if (beginning == end) {
+            System.out.println(prefix + "  → " + temperatures[beginning]);
             return temperatures[beginning];
         }
 
         // Calculate the midpoint of the current range
         int halfDistance = (end - beginning) / 2;
 
+        // Prefixes for tree structure formatting
+        String branchPrefix = prefix + "│   "; // Child branches
+        String lastBranchPrefix = prefix + "└── "; // Last branch
+
         // Recursively find the largest in the left half
-        int leftLargest = findLargest(beginning, beginning + halfDistance);
+        int leftLargest = findLargest(beginning, beginning + halfDistance, branchPrefix + "├── ");
 
         // Recursively find the largest in the right half
-        int rightLargest = findLargest(beginning + halfDistance + 1, end);
+        int rightLargest = findLargest(beginning + halfDistance + 1, end, branchPrefix + "├── ");
 
-        // Return the larger of the two values
-        return Math.max(leftLargest, rightLargest);
+        // Compare values and return the largest
+        int result = Math.max(leftLargest, rightLargest);
+        System.out.println(lastBranchPrefix + "Compare " + leftLargest + " vs " + rightLargest + " → Max: " + result);
+        
+        return result;
     }
 
     /**
@@ -60,25 +71,37 @@ public class findMax {
      * between the specified indices.
      * @param beginning The starting index of the range to search.
      * @param end The ending index of the range to search.
+     * @param prefix The indentation prefix for tree formatting in debugging output.
      * @return The smallest temperature reading in the specified range.
      */
-    public int findSmallest(int beginning, int end) {findLargest(0, 5);
+    public int findSmallest(int beginning, int end, String prefix) {
+        // Debug: Show current range being processed with tree structure
+        System.out.println(prefix + "findSmallest(" + beginning + "," + end + ")");
 
         // Base case: if the range contains only one element
         if (beginning == end) {
+            System.out.println(prefix + "  → " + temperatures[beginning]);
             return temperatures[beginning];
         }
 
         // Calculate the midpoint of the current range
         int halfDistance = (end - beginning) / 2;
 
+        // Prefixes for tree structure formatting
+        String branchPrefix = prefix + "│   "; // Child branches
+        String lastBranchPrefix = prefix + "└── "; // Last branch
+
         // Recursively find the smallest in the left half
-        int leftSmallest = findSmallest(beginning, beginning + halfDistance);
+        int leftSmallest = findSmallest(beginning, beginning + halfDistance, branchPrefix + "├── ");
 
         // Recursively find the smallest in the right half
-        int rightSmallest = findSmallest(beginning + halfDistance + 1, end);
+        int rightSmallest = findSmallest(beginning + halfDistance + 1, end, branchPrefix + "├── ");
 
-        // Return the smaller of the two values
-        return Math.min(leftSmallest, rightSmallest);
+        // Compare values and return the smallest
+        int result = Math.min(leftSmallest, rightSmallest);
+        System.out.println(lastBranchPrefix + "Compare " + leftSmallest + " vs " + rightSmallest + " → Min: " + result);
+        
+        return result;
     }
+
 }

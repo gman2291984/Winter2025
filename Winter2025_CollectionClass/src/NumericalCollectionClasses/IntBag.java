@@ -1,11 +1,21 @@
 package NumericalCollectionClasses;
 
+
+/*
+Methods --	What It Does:
+====================
+IntBag(size): Initializes an empty array of size size. Throws error if size < 2.
+add(item): Adds item to the next available position. Throws error if full.
+countInstances(target):	Counts how many times target appears in the array.
+delete(target):	Removes the first occurrence of target. Replaces it with the last valid element.
+ */
+
+
 public class IntBag {
 
     private int[] sack; // Array to store integers
     private int size; // Maximum size of the array
     private int counter; // Tracks the number of elements in the array
-    
     
     /**
      * Constructor to initialize the IntBag with a given size.

@@ -31,7 +31,8 @@ public class RegularQ {
         Q[tail] = input; // Insert element at tail
         tail = ++tail % QSize; // Circular increment of tail using modulo
         //tail = ++tail % 8 = (0+1) % 8 = 1
-        //tail = ++tail % 8 = (1+1) % 8 = 2...etc... tail = ++tail % 8 = (7+1) % 8 = 0 --> wrap around will occur
+        //tail = ++tail % 8 = (1+1) % 8 = 2...etc...
+        //tail = ++tail % 8 = (7+1) % 8 = 0 --> wrap around will occur
         if (head == -1) { // If queue was empty, set head to 0
             head = 0;
         }
@@ -79,7 +80,6 @@ public class RegularQ {
     	    System.out.println("\nThe head is now in position: " + head + " of " + QSize);
     	    System.out.println("The tail is now in position: " + tail + " of " + QSize + "\n");
     	}
-    
 }
 
 	

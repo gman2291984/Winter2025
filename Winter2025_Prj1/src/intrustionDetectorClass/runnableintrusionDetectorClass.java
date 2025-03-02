@@ -85,7 +85,7 @@ public class runnableintrusionDetectorClass {
 	    	//if the list is empty then return
 	    	return head;
 		
-		System.out.println("Running removeDuplicate() on target " + target + " ensuring its not already in the linked list\n");
+		System.out.println("[DEBUG] Running removeDuplicate() on target " + target + " ensuring its not already in the linked list...Sending to findPrevious(IntNode head, int target)\n");
 		
 		IntNode previous = null;
 		
@@ -114,7 +114,7 @@ public class runnableintrusionDetectorClass {
 	{
         IntNode previous = null;
 		
-        System.out.println("Running addNodeInOrder() on target " + target + " and data " + data + "\n");
+        System.out.println("[DEBUG] Running addNodeInOrder() on target " + target + " and data " + data + "...Sending to locatePredecessor(IntNode head, int target)\n");
         
         //if the list is empty then create the first Node
         if (head == null)

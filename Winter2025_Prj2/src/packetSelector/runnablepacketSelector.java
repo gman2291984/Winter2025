@@ -1,152 +1,123 @@
-// Stacks are LIFO, Quesues are FIFO....
+package packetSelector; // Defines the package name for organizational purposes.
 
-package packetSelector;
+import textbook.StackWork; // Imports the StackWork class to use stack operations.
 
-import textbook.StackWork;
+public class runnablepacketSelector { // Defines a class that manages network packet selection.
 
-public class runnablepacketSelector {
-    
-	private static final boolean DebuggerMODE = false;
-	//private static final boolean S1Only = true;
-	//private static final boolean S2Only = true;
-	
-	
+    // Toggle debug messages on/off
+    private static final boolean Debugger = true;
+
+    // StackWork instance to manage multiple stacks
     static StackWork packets;
 
-    public static void main(String[] args) {
-        System.out.println("Packet selector is now running...\n");
+    public static void main(String[] args) { // Main method, the entry point of the program.
 
-        // Initialize the StackWork object with three stacks
+        System.out.println("\n===== Packet Selector Initialized =====\n");
+
+        // Initialize StackWork with 3 stacks, each with a size of 10.
         packets = new StackWork(10, 10, 10);
 
-    	
-        
-        if (DebuggerMODE) {System.out.println("DEBUG: Starting Push... \n");}
-        
-        // Push time stamps (network packets)
-        packets.Push(0, 95); 
-        packets.Push(0, 103);
-        packets.Push(0, 81);
-        packets.Push(0, 120);
-        packets.Push(0, 74);
-        packets.Push(0, 134);
-        packets.Push(0, 62);
-        packets.Push(0, 101);
-        packets.Push(0, 59);
-        packets.Push(0, 148); //Last In -- First Out
+        // Define an array of initial packets to be pushed into stack S0.
+        int[] initialPackets = {95, 103, 81, 120, 74, 134, 62, 101, 59, 148};
 
-        if (DebuggerMODE) {System.out.println("\nDEBUG: All packets have been pushed... \n");}
-        
-        if (DebuggerMODE) {System.out.println("DEBUG: Prior to reorganizingNetworkTraffic called -- so S1 and S2 will be left empty... \n");}
-        // Display before reorganization
-        packets.displayStackData();
+        // Loop through the array and push each packet into stack S0.
+        for (int packet : initialPackets) {
+            packets.Push(0, packet); // Insert the packet into S0.
+        }
 
-        // Call method to reorganize network traffic
+        // Debugger output: Show initial state of stacks after pushing packets into S0.
+        if (Debugger) {
+            System.out.println("\n[DEBUG] All packets have been pushed into S0.");
+            System.out.println("[DEBUG] Initial Stack Contents:");
+            packets.displayStackData(); // Display stack contents.
+        }
+
+        // Call function to reorganize network traffic based on packet values.
         reorganizeNetworkTraffic(1);
 
-        //if (DebuggerMODE) {System.out.println("DEBUG: Post reorganizingNetworkTraffic being called -- so S1 and S2 will be populated... \n");}
-        // Display after reorganization
-        packets.displayStackData();
+        // Debugger output: Show final state of stacks after reorganization.
+        if (Debugger) {
+            System.out.println("\n[DEBUG] Final Stack Contents After Reorganization:");
+        }
+        packets.displayStackData(); // Display final stack contents.
     }
 
-	// Precondition: The StackWork object packets is different than null.
-	// Postcondition: The elements of the stack S0 that are equal to, or less than 100, are inserted in the stack S1.
-	// The elements of the stack S0 that are greater than 100 are inserted in the stack S2.
-    // The argument flg is flipped. In other words, if the caller passes 1, flg is set to 0. Similarly, if the caller passes 0, flg is set to 1. No further action is taken on flg. 
-    // Function to process stack S0 and distribute packets into S1 and S2
+    /**
+     * Reorganizes packets from stack S0:
+     * - Packets with values ≤ 100 go into S1 (low-priority packets).
+     * - Packets with values > 100 go into S2 (high-priority packets).
+     * - Ensures correct ordering is maintained.
+     */
     public static void reorganizeNetworkTraffic(int flg) {
-        int tempStackSize = packets.getS0top() + 1; // Number of elements in S0
-        int[] S1Temp = new int[tempStackSize]; // Temporary storage for S1
-        int[] S2Temp = new int[tempStackSize]; // Temporary storage for S2
+        int tempStackSize = packets.getS0top() + 1; // Determine the number of packets in S0.
+        int[] S1Temp = new int[tempStackSize]; // Temporary storage for packets moving to S1.
+        int[] S2Temp = new int[tempStackSize]; // Temporary storage for packets moving to S2.
 
-        int S1Index = 0;
-        int S2Index = 0;
+        int S1Index = 0; // Keeps track of how many elements are added to S1Temp.
+        int S2Index = 0; // Keeps track of how many elements are added to S2Temp.
 
-        if (DebuggerMODE) {System.out.println("\nDEBUG: Starting Pop... \n");}
-        
-        //2 part process to get reverse order!!!...
-        
-        
-        
-        // [1] Pop all elements from S0 and distribute into temporary arrays
+        // Debugger output: Indicate start of packet reorganization.
+        if (Debugger) {
+            System.out.println("\n===== Reorganizing Network Traffic =====");
+            System.out.println("[DEBUG] Starting packet extraction from S0...\n");
+        }
+
+        // Step 1: Pop all elements from S0 and store them in temporary arrays.
         for (int i = 0; i < tempStackSize; i++) {
-            int packet = packets.Pop(0);
-            
+            int packet = packets.Pop(0); // Remove the top element from S0.
+
+            // Categorize packets: ≤ 100 go to S1Temp, > 100 go to S2Temp.
             if (packet <= 100) {
-                S1Temp[S1Index++] = packet; // Store in S1Temp           
-                if (DebuggerMODE) {
-                    System.out.println("\nDEBUG: Storing " + packet + " into S1Temp");
-                    System.out.println("DEBUG: Current S1Temp values: ");
-                    for (int j = 0; j < S1Index; j++) { // ✅ Correct way to print S1Temp
-                        System.out.print(S1Temp[j] + " ");
-                    }
-                    //System.out.println("\n");
-                }
-                
+                S1Temp[S1Index++] = packet; // Store packet in S1Temp and increment index.
             } else {
-                S2Temp[S2Index++] = packet; // Store in S2Temp
-                if (DebuggerMODE) {
-                    System.out.println("\nDEBUG: Storing " + packet + " into S2Temp");
-                    System.out.println("DEBUG: Current S2Temp values: ");
-                    for (int j = 0; j < S2Index; j++) { // ✅ Correct way to print S1Temp
-                        System.out.print(S2Temp[j] + " ");
-                    }
-                    //System.out.println("\n");
-                }
+                S2Temp[S2Index++] = packet; // Store packet in S2Temp and increment index.
+            }
+
+            // Debugger output: Show which temporary stack the packet was assigned to.
+            if (Debugger) {
+                System.out.println("[DEBUG] Packet " + packet + " -> " + (packet <= 100 ? "S1Temp" : "S2Temp"));
             }
         }
-        
-        
-        if (DebuggerMODE) {System.out.println("\nDEBUG: End of Pop... \n");}
-        
 
-        if (DebuggerMODE) {System.out.println("\nDEBUG: Starting Push... \n");}
-        
-        
-        
-        // [2] Push back into S1/s2 in REVERSE order to ensure correct display
+        // Debugger output: Show extracted packets before reinsertion.
+        if (Debugger) {
+            System.out.println("\n[DEBUG] Finished extracting packets from S0.");
+
+            // Print contents of S1Temp.
+            System.out.print("[DEBUG] S1Temp: ");
+            for (int i = 0; i < S1Index; i++) System.out.print(S1Temp[i] + " | ");
+            System.out.println(); // New line for formatting.
+
+            // Print contents of S2Temp.
+            System.out.print("[DEBUG] S2Temp: ");
+            for (int i = 0; i < S2Index; i++) System.out.print(S2Temp[i] + " | ");
+            System.out.println("\n"); // New line for formatting.
+        }
+
+        // Step 2: Push elements back into S1 and S2 in **reverse order** to maintain stack behavior.
+        if (Debugger) {
+            System.out.println("[DEBUG] Reinserting packets into S1 and S2...\n");
+        }
+
+        // Insert packets into S1 (low-priority) in **reverse order**.
         for (int i = S1Index - 1; i >= 0; i--) {
-            packets.Push(1, S1Temp[i]);
-            if (DebuggerMODE) {System.out.println("\nDEBUG: Pushing S1Temp[" + i + "]: " + S1Temp[i] + " back into S1" + "\n");packets.displayStackData();}
-            
+            packets.Push(1, S1Temp[i]); // Push the element back into S1.
+            if (Debugger) {
+                System.out.println("[DEBUG] Pushed " + S1Temp[i] + " into S1.");
+            }
         }
 
-        // Push back into S2 in REVERSE order to ensure correct display
+        // Insert packets into S2 (high-priority) in **reverse order**.
         for (int i = S2Index - 1; i >= 0; i--) {
-            packets.Push(2, S2Temp[i]);
-            if (DebuggerMODE) {System.out.println("\nDEBUG: Pushing S2Temp[" + i + "]: " + S2Temp[i] + " back into S2" + "\n");packets.displayStackData();}       
+            packets.Push(2, S2Temp[i]); // Push the element back into S2.
+            if (Debugger) {
+                System.out.println("[DEBUG] Pushed " + S2Temp[i] + " into S2.");
+            }
         }
-		
-		        // Flip the flag (simple if-else instead of ternary)
-		        if (flg == 1) {
-		            flg = 0;
-		        } else {
-		            flg = 1;
-		        }
-        	}
+
+        // Debugger output: Indicate end of reorganization process.
+        if (Debugger) {
+            System.out.println("\n[DEBUG] Packet reorganization complete.");
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

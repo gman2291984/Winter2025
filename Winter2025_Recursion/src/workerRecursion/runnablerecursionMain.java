@@ -21,12 +21,16 @@ public class runnablerecursionMain {
         recursionObj.insertData(140);
         recursionObj.insertData(150);
 
-        // Find and display the highest temperature in the array
-        System.out.println("The highest temperature stored in the array is: "
-                + recursionObj.findLargest(0, 6));
+        // Find and display the highest temperature in the array with tree-formatted debug output
+        System.out.println("\n=== Finding Largest Temperature ===");
+        System.out.println("findLargest(0,6)");
+        int maxValue = recursionObj.findLargest(0, 6, "├── ");
+        System.out.println("The highest temperature stored in the array is: " + maxValue);
 
-        // Find and display the lowest temperature in the array
-        System.out.println("The lowest temperature stored in the array is: "
-                + recursionObj.findSmallest(0, 6));
+        // Find and display the lowest temperature in the array with tree-formatted debug output
+        System.out.println("\n=== Finding Smallest Temperature ===");
+        System.out.println("findSmallest(0,6)");
+        int minValue = recursionObj.findSmallest(0, 6, "├── ");
+        System.out.println("The lowest temperature stored in the array is: " + minValue);
     }
 }
